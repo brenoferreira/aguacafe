@@ -1,0 +1,58 @@
+body {
+  display: block;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  color: #000;
+}
+
+.tips {
+  list-style-position: inside;
+  list-style-type: decimal;
+  padding: 0;
+}
+
+.tip {
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  font-size: 1.1rem;
+  font-weight: 500;
+  background-color: rgb(249, 222, 178);
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: .75rem;
+  margin-top: 2rem;
+}
+
+.guess {
+  background-color: #06AA48;
+  color: #fff;
+}
+
+.skip {
+  background-color: #ff7400;
+  color: #fff;
+}
+
+input[type="text"] {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  width: 150px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
