@@ -101,28 +101,28 @@ const WaterMineralOCRApp = () => {
     }
   };
 
-// Perform OCR on captured image using Tesseract worker
-const performOCR = async () => {
-    if (!capturedImage) return;
+    // Perform OCR on captured image using Tesseract worker
+    const performOCR = async () => {
+        if (!capturedImage) return;
 
-    setIsProcessing(true);
-    
-    const imageBase64 = capturedImage.split(',')[1];
-    const response = await ollama.chat({
-        model: 'llama3.2-vision',
-        messages: [{
-          role: 'user',
-          content: 'Gere uma tabela da composição química da agua',
-          images: [imageBase64]
-        }]
-    })
+        setIsProcessing(true);
+        
+        const imageBase64 = capturedImage.split(',')[1];
+        const response = await ollama.chat({
+            model: 'llama3.2-vision',
+            messages: [{
+            role: 'user',
+            content: 'Gere uma tabela da composição química da agua',
+            images: [imageBase64]
+            }]
+        })
 
-    const ocrText = response.message.content;
+        const ocrText = response.message.content;
 
-    setOcrResult(ocrText);
-    extractMineralData(ocrText);
-    setIsProcessing(false);
-};
+        setOcrResult(ocrText);
+        extractMineralData(ocrText);
+        setIsProcessing(false);
+    };
 
   // Extract specific mineral data from OCR text
   const extractMineralData = (ocrText) => {
