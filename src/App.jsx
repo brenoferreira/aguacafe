@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { createWorker, createScheduler } from 'tesseract.js';
+// import { createWorker, createScheduler } from 'tesseract.js';
+import ollama from 'ollama';
 
 const WaterMineralOCRApp = () => {
   const [capturedImage, setCapturedImage] = useState(null);
@@ -105,27 +106,22 @@ const performOCR = async () => {
     if (!capturedImage) return;
 
     setIsProcessing(true);
-    const worker1 = await createWorker('por', 1, { logger: m => console.log(m) });
-    const worker2 = await createWorker('por', 1, { logger: m => console.log(m) });
-    const worker3 = await createWorker('por', 1, { logger: m => console.log(m) });
+    
+    const imageBase64 = capturedImage.split(',')[1];
+    const response = await ollama.chat({
+        model: 'llama3.2-vision',
+        messages: [{
+          role: 'user',
+          content: 'Gere uma tabela da composição química da agua',
+          images: [imageBase64]
+        }]
+    })
 
-    const scheduler = createScheduler();
-    scheduler.addWorker(worker1);
-    scheduler.addWorker(worker2);
-    scheduler.addWorker(worker3);
+    const ocrText = response.message.content;
 
-    try {
-        const { data: { text } } = await scheduler.addJob('recognize', capturedImage);
-
-        setOcrResult(text);
-        extractMineralData(text);
-    } catch (error) {
-        console.error('OCR Error:', error);
-        alert('Failed to perform OCR');
-    } finally {
-        await scheduler.terminate();
-        setIsProcessing(false);
-    }
+    setOcrResult(ocrText);
+    extractMineralData(ocrText);
+    setIsProcessing(false);
 };
 
   // Extract specific mineral data from OCR text
